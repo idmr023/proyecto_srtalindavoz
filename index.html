@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Para Ti 💌</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(to right, #ffe0ec, #fbeff8);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .carta {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      max-width: 650px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .carta img {
+      max-width: 150px;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    .carta h1 {
+      color: #d14f7b;
+      margin-bottom: 20px;
+    }
+
+    .texto-escrito {
+      font-size: 1.05rem;
+      color: #444;
+      text-align: justify;
+      margin-bottom: 1.5rem;
+      min-height: 80px;
+    }
+
+    .respuestas {
+      margin-top: 30px;
+      position: relative;
+      height: 60px;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    .btn-si {
+      animation: bounce 1.5s infinite;
+      transition: all 0.3s ease;
+    }
+
+    .btn-no {
+      position: absolute;
+      transition: 0.2s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="carta">
+    <img src="https://i.pinimg.com/originals/85/83/8a/85838a2485e7ff0fef64af1e398fada5.png" alt="Imagen tierna" />
+    <h1>Hola señorita de una linda voz</h1>
+
+    <p class="texto-escrito" id="p1"></p>
+    <p class="texto-escrito" id="p2"></p>
+    <p class="texto-escrito" id="p3"></p>
+
+    <h5 class="mt-4">¿Te sumas a esta aventura?</h5>
+    <div class="respuestas">
+      <button class="btn btn-success btn-si me-2">Sí 💖</button>
+      <button class="btn btn-outline-danger btn-no">No 😢</button>
+    </div>
+  </div>
+
+  <script>
+    const textos = [
+      `También te quería comentar que mi meta del año es terminar con la carrera, de ahí hacer un diplomado y si Dios quiere y no exploto titularme a la vez. Luego quiero una Maestría, aunque creo que me tomará tiempo por todo el dinero que debo ahorrar, así que entre titulación y Maestría ya debo tener un trabajo remoto para Europa, estaba pensando Portugal o España porque necesito que me paguen bien pero sin irme por la titulación. Una vez tenga bastante dinero ahorrado pienso hacer mi Maestría en España, he estado viendo algunas opciones y suenan interesantes, no sé si para el 2026 o 27 la haré porque como te comento, necesito ahorrar bastante dinero.`,
+      `Te quería mencionar esto, siendo honesto, porque me estás empezando a gustar, no puedo dejar de pensar en ti y siento como todas esas emociones van cuesta arriba, tal vez sea un poco prematuro decirte esto, pero las características que tenemos en común hacen que piense que podemos conocernos bien y una relación estable puede salir de este chat, de verdad eres mi debilidad y no te digo nada de esto para ganar puntos contigo, en realidad estoy siendo totalmente honesto. Me gustaría seguir conociéndote y hacer más actividades contigo, salir, entrenar, estaba pensando que podíamos visitar el nuevo puente que se va inaugurar en Miraflores, entre otros. Pero si quisiera que tengas presente que eventualmente me iré del país por la Maestría y si en caso tuviésemos una relación y a la vez yo esté con la maestría, pondría el 200% de mi para seguir adelante, ya debes saber que para mi no hay nada imposible.`,
+      `Por mencionar, ahorita mismo estoy con el gym, la u, la tesis, el trabajo, ahora hablando contigo y aún así me doy tiempo para todo y además respirar o tomar algún curso adicional. Entonces tienes mi compromiso para darlo todo y más, pero solo si quieres. Mis horarios y los plazos van cambiando y hoy pienso que lo puedo hacer en un tiempo determinado pero realmente no sé cuanto tiempo me vaya a demorar en ahorrar el dinero, algo que si tengo claro es que dentro de los próximos 4 años si o si cumpliré estos objetivos. Ahora mi pregunta, y esto no significa ya acepto ser tu enamorada ahorita mismo rai nau, significa okey vamos a conocernos, soy consciente de lo que mencionas y no es un incoveniente para salir contigo y con mucho esfuerzo una relación, o sea para salir.`
+    ];
+
+    const speed = 60;
+    let current = 0;
+    let i = 0;
+
+    function escribirTexto(texto, contenedor, callback) {
+      if (i < texto.length) {
+        contenedor.innerHTML += texto.charAt(i);
+        i++;
+        setTimeout(() => escribirTexto(texto, contenedor, callback), speed);
+      } else {
+        i = 0;
+        if (callback) callback();
+      }
+    }
+
+    function iniciarEscritura() {
+      escribirTexto(textos[0], document.getElementById("p1"), () => {
+        escribirTexto(textos[1], document.getElementById("p2"), () => {
+          escribirTexto(textos[2], document.getElementById("p3"));
+        });
+      });
+    }
+
+    window.onload = iniciarEscritura;
+
+    // Botón Sí: registrar y agradecer
+    document.querySelector(".btn-si").addEventListener("click", () => {
+      fetch(`/respuesta-si?t=${Date.now()}`);
+      alert("¡Gracias por responder! 💌");
+    });
+
+    // Botón No: moverse al intentar presionar
+    const btnNo = document.querySelector(".btn-no");
+    const contenedor = document.querySelector(".respuestas");
+
+    btnNo.addEventListener("mouseenter", () => {
+      const maxX = contenedor.clientWidth - btnNo.offsetWidth;
+      const maxY = contenedor.clientHeight - btnNo.offsetHeight;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      btnNo.style.left = `${x}px`;
+      btnNo.style.top = `${y}px`;
+    });
+
+    btnNo.addEventListener("click", () => {
+      fetch(`/respuesta-no?t=${Date.now()}`);
+      alert("¡Gracias por tu sinceridad! 🥲");
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
