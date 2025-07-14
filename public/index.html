@@ -1,3 +1,4 @@
+<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -73,8 +74,7 @@
 </head>
 <body>
   <div class="carta">
-    <img src="https://i.pinimg.com/originals/85/83/8a/85838a2485e7ff0fef64af1e398fada5.png" alt="Imagen tierna" />
-    <h1>Hola señorita de una linda voz</h1>
+    <h1>Hola, señorita con una linda voz</h1>
 
     <p class="texto-escrito" id="p1"></p>
     <p class="texto-escrito" id="p2"></p>
@@ -94,8 +94,7 @@
       `Por mencionar, ahorita mismo estoy con el gym, la u, la tesis, el trabajo, ahora hablando contigo y aún así me doy tiempo para todo y además respirar o tomar algún curso adicional. Entonces tienes mi compromiso para darlo todo y más, pero solo si quieres. Mis horarios y los plazos van cambiando y hoy pienso que lo puedo hacer en un tiempo determinado pero realmente no sé cuanto tiempo me vaya a demorar en ahorrar el dinero, algo que si tengo claro es que dentro de los próximos 4 años si o si cumpliré estos objetivos. Ahora mi pregunta, y esto no significa ya acepto ser tu enamorada ahorita mismo rai nau, significa okey vamos a conocernos, soy consciente de lo que mencionas y no es un incoveniente para salir contigo y con mucho esfuerzo una relación, o sea para salir.`
     ];
 
-    const speed = 60;
-    let current = 0;
+    const speed = 15;
     let i = 0;
 
     function escribirTexto(texto, contenedor, callback) {
@@ -119,13 +118,11 @@
 
     window.onload = iniciarEscritura;
 
-    // Botón Sí: registrar y agradecer
     document.querySelector(".btn-si").addEventListener("click", () => {
-      fetch(`/respuesta-si?t=${Date.now()}`);
+      fetch(`/api/respuesta?tipo=si&t=${Date.now()}`);
       alert("¡Gracias por responder! 💌");
     });
 
-    // Botón No: moverse al intentar presionar
     const btnNo = document.querySelector(".btn-no");
     const contenedor = document.querySelector(".respuestas");
 
@@ -139,7 +136,7 @@
     });
 
     btnNo.addEventListener("click", () => {
-      fetch(`/respuesta-no?t=${Date.now()}`);
+      fetch(`/api/respuesta?tipo=no&t=${Date.now()}`);
       alert("¡Gracias por tu sinceridad! 🥲");
     });
   </script>
